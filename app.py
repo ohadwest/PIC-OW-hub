@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# הזרקת עיצוב מותאם אישית (CSS)
+# הזרקת עיצוב מותאם אישית (CSS) עם ניגודיות גבוהה ותמיכה מלאה ב-Light & Dark Mode
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&family=Inter:wght@400;600;800&display=swap');
@@ -17,10 +17,11 @@ st.markdown("""
         font-family: 'Inter', 'Heebo', sans-serif;
     }
     
+    /* כותרת ראשי עם גרדיאנט בולט */
     .main-title {
         font-size: 3.2rem;
         font-weight: 800;
-        background: linear-gradient(90deg, #00d2ff 0%, #9D4EDD 100%);
+        background: linear-gradient(90deg, #0284C7 0%, #7C3AED 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-align: center;
@@ -30,36 +31,65 @@ st.markdown("""
     
     .sub-title {
         text-align: center;
-        color: #94A3B8;
+        color: var(--text-color, #475569);
         font-size: 1.2rem;
-        margin-bottom: 40px;
-        font-weight: 400;
+        margin-bottom: 35px;
+        font-weight: 500;
+        opacity: 0.9;
     }
 
+    /* עיצוב כרטיסיות קבוע עם ניגודיות גבוהה בולטת */
+    [data-testid="stVerticalBlockBorderWrapper"] {
+        background-color: var(--background-secondary-color, #0F172A) !important;
+        border: 1px solid var(--border-color, #334155) !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    /* כותרת הכרטיסייה - צבע בולט וקריא בכל מצב מסך */
+    .card-title {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: #38BDF8 !important; /* תכלת-בוהק בולט וקריא במיוחד */
+        margin-bottom: 10px;
+        line-height: 1.25;
+    }
+    
+    /* טקסט תיאור הכרטיסייה */
+    .card-text {
+        font-size: 0.95rem;
+        color: #F1F5F9 !important; /* לבן-אופווייט בולט מאוד */
+        line-height: 1.5;
+        margin-bottom: 18px;
+        min-height: 65px;
+    }
+
+    /* תגיות סטטוס מודרניות */
     .badge-live {
-        background: rgba(0, 245, 212, 0.1);
-        color: #00F5D4;
+        background: rgba(16, 185, 129, 0.2);
+        color: #34D399 !important;
         padding: 4px 10px;
-        border-radius: 10px;
+        border-radius: 8px;
         font-size: 0.75rem;
-        font-weight: 600;
-        border: 1px solid rgba(0, 245, 212, 0.3);
+        font-weight: 700;
+        border: 1px solid rgba(52, 211, 153, 0.4);
         display: inline-block;
     }
     
     .badge-soon {
-        background: rgba(255, 183, 3, 0.1);
-        color: #FFB703;
+        background: rgba(245, 158, 11, 0.2);
+        color: #FBBF24 !important;
         padding: 4px 10px;
-        border-radius: 10px;
+        border-radius: 8px;
         font-size: 0.75rem;
-        font-weight: 600;
-        border: 1px solid rgba(255, 183, 3, 0.3);
+        font-weight: 700;
+        border: 1px solid rgba(251, 191, 36, 0.4);
         display: inline-block;
     }
 
     .version-tag {
-        color: #64748B;
+        color: #94A3B8 !important;
         font-size: 0.75rem;
         font-weight: 600;
         float: right;
@@ -72,26 +102,10 @@ st.markdown("""
         margin-bottom: 12px;
     }
     
-    .card-title {
-        font-size: 1.35rem;
-        font-weight: 800;
-        color: #F8FAFC;
-        margin-bottom: 8px;
-        line-height: 1.2;
-    }
-    
-    .card-text {
-        font-size: 0.92rem;
-        color: #CBD5E1;
-        line-height: 1.5;
-        margin-bottom: 20px;
-        min-height: 65px;
-    }
-    
     .placeholder-box {
         height: 160px;
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px dashed #334155;
+        background: #1E293B;
+        border: 1px dashed #475569;
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -103,13 +117,13 @@ st.markdown("""
     .stLinkButton > a {
         width: 100%;
         text-align: center;
-        font-weight: 600;
-        border-radius: 6px;
+        font-weight: 700;
+        border-radius: 8px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# פונקציית עזר להצגת תמונה או קופסה חלופית במידה והקובץ חסר
+# פונקציית עזר להצגת תמונה או קופסה חלופית
 def display_card_image(img_path, default_emoji="🔬"):
     if os.path.exists(img_path):
         st.image(img_path, use_container_width=True)
@@ -212,4 +226,4 @@ with col6:
         st.button("המודול בפיתוח...", disabled=True, use_container_width=True, key="btn_acoustic")
 
 st.divider()
-st.markdown("<p style='text-align: center; color: #475569; font-size: 0.9rem;'>Powered by Advanced Finite-Difference Algorithms | Engineered for Silicon Photonics</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #64748B; font-size: 0.9rem;'>Powered by Advanced Finite-Difference Algorithms | Engineered for Silicon Photonics</p>", unsafe_allow_html=True)
