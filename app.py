@@ -33,12 +33,14 @@ T = {
         "main_title": "Silicon Photonics Simulation Hub",
         "sub_title": "פלטפורמה לתכנון, סימולציה וניתוח של רכיבים פוטוניים משולבים",
         "active_sec": "🚀 מנועי סימולציה פעילים",
-        "soon_sec": "⏳ מודולים עתידיים בפיתוח",
+        "soon_sec": "⏳ מודולים בפיתוח (עם גישת Beta)",
         "btn_launch": "הפעל מנוע ➔",
+        "btn_beta": "הפעל גרסת Beta ➔",
         "btn_dev": "בפיתוח...",
         "badge_active": "🟢 פעיל",
+        "badge_beta": "🟡 Beta / בפיתוח",
         "badge_soon": "⏳ בקרוב",
-        # מודולים פעילים
+        # מודולים פעילים למעלה
         "m1_title": "Standard Mode Solver",
         "m1_desc": "חישוב אופני התפשטות במוליך גל מלבני, $n_{eff}$ ופרופיל שדות TE/TM.",
         "m2_title": "Advanced Mode Solver",
@@ -47,9 +49,9 @@ T = {
         "m3_desc": "ניתוח מצמד סימטרי. חישובי Even/Odd supermodes, אורך צימוד $L_c$ והעברת הספק.",
         "m4_title": "Asymmetric ADC",
         "m4_desc": "מצמד א-סימטרי ($w_1 \\neq w_2$). אנליזת Phase Mismatch והעברת הספק מרבית.",
+        # מודולים ברביעייה התחתונה
         "m5_title": "Ring Resonator Engine",
         "m5_desc": "אנליזת תהודה בודדת (All-Pass / Add-Drop), סריקת $Q_i / Q_c$, וספקטרום רחב כולל $\\kappa(\\lambda)$.",
-        # מודולים עתידיים
         "m6_title": "Acousto-Optics",
         "m6_desc": "אינטראקציה פוטו-אקוסטית, התפשטות גלים אקוסטיים ואפנון מקדם השבירה.",
         "m7_title": "Electro-Optic Modulator",
@@ -64,10 +66,12 @@ T = {
         "main_title": "Silicon Photonics Simulation Hub",
         "sub_title": "A platform for design, simulation, and analysis of integrated photonic components",
         "active_sec": "🚀 Active Simulation Engines",
-        "soon_sec": "⏳ Future Modules in Development",
+        "soon_sec": "⏳ Modules in Development (With Beta Access)",
         "btn_launch": "Launch Engine ➔",
+        "btn_beta": "Launch Beta ➔",
         "btn_dev": "In Development...",
         "badge_active": "🟢 Active",
+        "badge_beta": "🟡 Beta / In-Dev",
         "badge_soon": "⏳ Coming Soon",
         # Active Modules
         "m1_title": "Standard Mode Solver",
@@ -78,9 +82,9 @@ T = {
         "m3_desc": "Symmetric directional coupler analysis. Even/Odd supermodes, $L_c$, and power transfer.",
         "m4_title": "Asymmetric ADC",
         "m4_desc": "Asymmetric coupler ($w_1 \\neq w_2$). Phase mismatch analysis and max power conversion.",
+        # Bottom Row Modules
         "m5_title": "Ring Resonator Engine",
         "m5_desc": "Single resonance analysis (All-Pass / Add-Drop), $Q_i / Q_c$ sweeps, and broadband spectrum with $\\kappa(\\lambda)$.",
-        # Future Modules
         "m6_title": "Acousto-Optics",
         "m6_desc": "Photo-acoustic interactions, acoustic wave propagation, and index modulation.",
         "m7_title": "Electro-Optic Modulator",
@@ -173,15 +177,26 @@ st.markdown(f"""
         border: 1px solid #34D399;
         display: inline-block;
     }}
-    
-    .badge-soon {{
-        background: rgba(245, 158, 11, 0.3);
-        color: #FBBF24 !important;
+
+    .badge-beta {{
+        background: rgba(234, 179, 8, 0.3);
+        color: #FACC15 !important;
         padding: 4px 10px;
         border-radius: 8px;
         font-size: 0.75rem;
         font-weight: 800;
-        border: 1px solid #FBBF24;
+        border: 1px solid #FACC15;
+        display: inline-block;
+    }}
+    
+    .badge-soon {{
+        background: rgba(148, 163, 184, 0.2);
+        color: #94A3B8 !important;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        border: 1px solid #94A3B8;
         display: inline-block;
     }}
 
@@ -253,10 +268,10 @@ st.markdown(f'''
 st.markdown(f'<div class="sub-title">{T["sub_title"]}</div>', unsafe_allow_html=True)
 
 # ==========================================
-# שורה 1: מנועי סימולציה פעילים (עכשיו כולל את 5 המודולים הפעילים!)
+# שורה 1: מנועי סימולציה פעילים (4 מודולים)
 # ==========================================
 st.markdown(f"### {T['active_sec']}")
-col1, col2, col3, col4, col5_active = st.columns(5, gap="medium")
+col1, col2, col3, col4 = st.columns(4, gap="medium")
 
 with col1:
     with st.container(border=True):
@@ -310,28 +325,28 @@ with col4:
         st.markdown(f'<div class="card-text">{T["m4_desc"]}</div>', unsafe_allow_html=True)
         st.link_button(T['btn_launch'], "https://asymmetric-directional-coupler-ohadwest.streamlit.app/", use_container_width=True)
 
-# המודול החדש והפעיל של ה-Ring Resonator!
-with col5_active:
-    with st.container(border=True):
-        display_card_image("img5.png", "⭕")
-        st.markdown(f'''
-            <div class="card-header-row">
-                <span class="badge-live">{T['badge_active']}</span>
-                <span class="version-tag">v1.0.0</span>
-            </div>
-        ''', unsafe_allow_html=True)
-        st.markdown(f'<div class="card-title">{T["m5_title"]}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="card-text">{T["m5_desc"]}</div>', unsafe_allow_html=True)
-        st.link_button(T['btn_launch'], "https://rr-app.streamlit.app/", use_container_width=True)
-
 st.write("")
 st.divider()
 
 # ==========================================
-# שורה 2: מודולים עתידיים בפיתוח (3 כרטיסיות נותרות)
+# שורה 2: מודולים בפיתוח - כולל גישת Beta פעילה ל-Ring Resonator
 # ==========================================
 st.markdown(f"### {T['soon_sec']}")
-col6, col7, col8 = st.columns(3, gap="medium")
+col5, col6, col7, col8 = st.columns(4, gap="medium")
+
+# מודול ה-Ring Resonator ברביעייה התחתונה עם תגית Beta וגישה פתוחה!
+with col5:
+    with st.container(border=True):
+        display_card_image("img5.png", "⭕")
+        st.markdown(f'''
+            <div class="card-header-row">
+                <span class="badge-beta">{T['badge_beta']}</span>
+                <span class="version-tag">v1.0.0-beta</span>
+            </div>
+        ''', unsafe_allow_html=True)
+        st.markdown(f'<div class="card-title">{T["m5_title"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="card-text">{T["m5_desc"]}</div>', unsafe_allow_html=True)
+        st.link_button(T['btn_beta'], "https://rr-app.streamlit.app/", use_container_width=True)
 
 with col6:
     with st.container(border=True):
