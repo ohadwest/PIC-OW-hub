@@ -2,7 +2,7 @@ import os
 import streamlit as st
 
 # הגדרת גרסת המערכת
-HUB_VERSION = "v1.0.0"
+HUB_VERSION = "v1.1.0"
 
 st.set_page_config(
     page_title="Silicon Photonics Hub",
@@ -47,9 +47,9 @@ T = {
         "m3_desc": "ניתוח מצמד סימטרי. חישובי Even/Odd supermodes, אורך צימוד $L_c$ והעברת הספק.",
         "m4_title": "Asymmetric ADC",
         "m4_desc": "מצמד א-סימטרי ($w_1 \\neq w_2$). אנליזת Phase Mismatch והעברת הספק מרבית.",
+        "m5_title": "Ring Resonator Engine",
+        "m5_desc": "אנליזת תהודה בודדת (All-Pass / Add-Drop), סריקת $Q_i / Q_c$, וספקטרום רחב כולל $\\kappa(\\lambda)$.",
         # מודולים עתידיים
-        "m5_title": "Ring Resonator",
-        "m5_desc": "תמסורת רזונטורים טבעתיים, חילוץ Q-factor, FSR ופרופילי לורנץ דינמיים.",
         "m6_title": "Acousto-Optics",
         "m6_desc": "אינטראקציה פוטו-אקוסטית, התפשטות גלים אקוסטיים ואפנון מקדם השבירה.",
         "m7_title": "Electro-Optic Modulator",
@@ -78,9 +78,9 @@ T = {
         "m3_desc": "Symmetric directional coupler analysis. Even/Odd supermodes, $L_c$, and power transfer.",
         "m4_title": "Asymmetric ADC",
         "m4_desc": "Asymmetric coupler ($w_1 \\neq w_2$). Phase mismatch analysis and max power conversion.",
+        "m5_title": "Ring Resonator Engine",
+        "m5_desc": "Single resonance analysis (All-Pass / Add-Drop), $Q_i / Q_c$ sweeps, and broadband spectrum with $\\kappa(\\lambda)$.",
         # Future Modules
-        "m5_title": "Ring Resonator",
-        "m5_desc": "Ring transmission spectra, Q-factor extraction, FSR, and dynamic Lorentzian profiles.",
         "m6_title": "Acousto-Optics",
         "m6_desc": "Photo-acoustic interactions, acoustic wave propagation, and index modulation.",
         "m7_title": "Electro-Optic Modulator",
@@ -92,7 +92,7 @@ T = {
 }[lang]
 
 # ==========================================
-# הזרקת עיצוב CSS דינמי לפי שפה וערכת נושא
+# הזרקת עיצוב CSS דינמי
 # ==========================================
 st.markdown(f"""
 <style>
@@ -103,7 +103,6 @@ st.markdown(f"""
         direction: {T['dir']};
     }}
     
-    /* כותרת ראשית מעוצבת */
     .main-title {{
         font-size: 3.2rem;
         font-weight: 900;
@@ -135,7 +134,6 @@ st.markdown(f"""
         margin-top: 5px;
     }}
 
-    /* כרטיסיות כהות בעלות ניגודיות גבוהה מובטחת בכל מצב מסך */
     [data-testid="stVerticalBlockBorderWrapper"] {{
         background-color: #0F172A !important;
         border: 2px solid #334155 !important;
@@ -145,7 +143,6 @@ st.markdown(f"""
         text-align: {T['align']};
     }}
 
-    /* כותרת הכרטיסייה - תכלת בולט וקריא */
     .card-title {{
         font-size: 1.3rem;
         font-weight: 900;
@@ -155,9 +152,8 @@ st.markdown(f"""
         text-align: {T['align']};
     }}
     
-    /* טקסט התיאור - לבן מודגש לקריאות 100% */
     .card-text {{
-        font-size: 0.98rem;
+        font-size: 0.95rem;
         font-weight: 700 !important;
         color: #FFFFFF !important;
         text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.9);
@@ -167,7 +163,6 @@ st.markdown(f"""
         text-align: {T['align']};
     }}
 
-    /* תגיות סטטוס */
     .badge-live {{
         background: rgba(16, 185, 129, 0.3);
         color: #34D399 !important;
@@ -241,16 +236,13 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# פונקציית עזר להצגת תמונה או קופסה חלופית
 def display_card_image(img_path, default_emoji="🔬"):
     if os.path.exists(img_path):
         st.image(img_path, use_container_width=True)
     else:
         st.markdown(f'<div class="placeholder-box">{default_emoji}</div>', unsafe_allow_html=True)
 
-# ==========================================
-# כותרות ראשיות ותגית גרסה
-# ==========================================
+# כותרת ראשית
 st.markdown(f'''
     <div class="main-title">{T['main_title']}</div>
     <div style="text-align: center;">
@@ -261,10 +253,10 @@ st.markdown(f'''
 st.markdown(f'<div class="sub-title">{T["sub_title"]}</div>', unsafe_allow_html=True)
 
 # ==========================================
-# שורה 1: מנועי סימולציה פעילים (1-4)
+# שורה 1: מנועי סימולציה פעילים (עכשיו כולל את 5 המודולים הפעילים!)
 # ==========================================
 st.markdown(f"### {T['active_sec']}")
-col1, col2, col3, col4 = st.columns(4, gap="medium")
+col1, col2, col3, col4, col5_active = st.columns(5, gap="medium")
 
 with col1:
     with st.container(border=True):
@@ -318,27 +310,28 @@ with col4:
         st.markdown(f'<div class="card-text">{T["m4_desc"]}</div>', unsafe_allow_html=True)
         st.link_button(T['btn_launch'], "https://asymmetric-directional-coupler-ohadwest.streamlit.app/", use_container_width=True)
 
-st.write("")
-st.divider()
-
-# ==========================================
-# שורה 2: מודולים עתידיים בפיתוח (5-8)
-# ==========================================
-st.markdown(f"### {T['soon_sec']}")
-col5, col6, col7, col8 = st.columns(4, gap="medium")
-
-with col5:
+# המודול החדש והפעיל של ה-Ring Resonator!
+with col5_active:
     with st.container(border=True):
         display_card_image("img5.png", "⭕")
         st.markdown(f'''
             <div class="card-header-row">
-                <span class="badge-soon">{T['badge_soon']}</span>
-                <span class="version-tag">v2.0.0-dev</span>
+                <span class="badge-live">{T['badge_active']}</span>
+                <span class="version-tag">v1.0.0</span>
             </div>
         ''', unsafe_allow_html=True)
         st.markdown(f'<div class="card-title">{T["m5_title"]}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="card-text">{T["m5_desc"]}</div>', unsafe_allow_html=True)
-        st.button(T['btn_dev'], disabled=True, use_container_width=True, key="btn_ring")
+        st.link_button(T['btn_launch'], "https://rr-app.streamlit.app/", use_container_width=True)
+
+st.write("")
+st.divider()
+
+# ==========================================
+# שורה 2: מודולים עתידיים בפיתוח (3 כרטיסיות נותרות)
+# ==========================================
+st.markdown(f"### {T['soon_sec']}")
+col6, col7, col8 = st.columns(3, gap="medium")
 
 with col6:
     with st.container(border=True):
