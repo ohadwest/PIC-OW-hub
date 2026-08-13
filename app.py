@@ -2,7 +2,7 @@ import os
 import streamlit as st
 
 # הגדרת גרסת המערכת
-HUB_VERSION = "v1.1.0"
+HUB_VERSION = "v1.2.0"
 
 st.set_page_config(
     page_title="Silicon Photonics Hub",
@@ -57,7 +57,7 @@ T = {
         "m7_title": "Electro-Optic Modulator",
         "m7_desc": "אנליזת אפנון אלקטרו-אופטי ($V_\\pi L$), הזרקת נשאים ודינמיקת פאזה רחבת סרט.",
         "m8_title": "Bragg Grating Solver",
-        "m8_desc": "סימולציית מחזירי בראג ($DBR$), רוחב פס רפלקטיבי ומקדמי צימוד $g(\\lambda)$.",
+        "m8_desc": "סימולציית מחזירי בראג ($DBR$), רוחב פס רפלקטיבי, תהודת Defect Cavity וסטיית עובי.",
         "footer_tech": "מבוסס על אלגוריתמים מתקדמים להפרשים סופיים | מתוכנן לפוטוניקת סיליקון",
     },
     "En": {
@@ -90,7 +90,7 @@ T = {
         "m7_title": "Electro-Optic Modulator",
         "m7_desc": "Electro-optic modulation ($V_\\pi L$), carrier injection, and broadband phase dynamics.",
         "m8_title": "Bragg Grating Solver",
-        "m8_desc": "Distributed Bragg Reflector (DBR) simulation, reflection bandwidth, and coupling $g(\\lambda)$.",
+        "m8_desc": "1D DBR simulation, stopband bandwidth, Defect Cavity resonance, and thickness deviation.",
         "footer_tech": "Powered by Advanced Finite-Difference Algorithms | Engineered for Silicon Photonics",
     }
 }[lang]
@@ -329,12 +329,12 @@ st.write("")
 st.divider()
 
 # ==========================================
-# שורה 2: מודולים בפיתוח - כולל גישת Beta פעילה ל-Ring Resonator
+# שורה 2: מודולים בפיתוח - כולל גישת Beta פעילה ל-Ring Resonator ו-Bragg Grating
 # ==========================================
 st.markdown(f"### {T['soon_sec']}")
 col5, col6, col7, col8 = st.columns(4, gap="medium")
 
-# מודול ה-Ring Resonator ברביעייה התחתונה עם תגית Beta וגישה פתוחה!
+# מודול ה-Ring Resonator
 with col5:
     with st.container(border=True):
         display_card_image("img5.png", "⭕")
@@ -374,18 +374,19 @@ with col7:
         st.markdown(f'<div class="card-text">{T["m7_desc"]}</div>', unsafe_allow_html=True)
         st.button(T['btn_dev'], disabled=True, use_container_width=True, key="btn_eom")
 
+# מודול Bragg Grating Solver ברביעייה התחתונה עם תגית Beta וגישה פתוחה!
 with col8:
     with st.container(border=True):
         display_card_image("img8.png", "📊")
         st.markdown(f'''
             <div class="card-header-row">
-                <span class="badge-soon">{T['badge_soon']}</span>
-                <span class="version-tag">v2.3.0-dev</span>
+                <span class="badge-beta">{T['badge_beta']}</span>
+                <span class="version-tag">v1.2.0-beta</span>
             </div>
         ''', unsafe_allow_html=True)
         st.markdown(f'<div class="card-title">{T["m8_title"]}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="card-text">{T["m8_desc"]}</div>', unsafe_allow_html=True)
-        st.button(T['btn_dev'], disabled=True, use_container_width=True, key="btn_bragg")
+        st.link_button(T['btn_beta'], "https://bragg-grating-simulator-ow.streamlit.app/", use_container_width=True)
 
 st.divider()
 
